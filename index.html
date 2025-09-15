@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Qmon</title>
+    <title>QR Code Studio</title>
     <link rel="stylesheet" href="css/main.css" />
     <style>
         body {
@@ -15,6 +15,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] body {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
         }
         
         .loading-container {
@@ -55,17 +60,154 @@
             font-size: 0.9rem;
             opacity: 0.8;
         }
+        
+        /* Dark Mode Toggle - Positioned absolutely */
+        .dark-mode-toggle-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .toggle-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 14px;
+        }
+        
+        .toggle-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 40px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .toggle-switch.active {
+            background: #3B82F6;
+        }
+        
+        .toggle-thumb {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+        
+        .toggle-switch.active .toggle-thumb {
+            transform: translateX(20px);
+        }
     </style>
 </head>
 <body>
+    <!-- Dark Mode Toggle -->
+    <div class="dark-mode-toggle-container">
+        <div class="toggle-button" id="darkModeToggle">
+            <span id="themeLabel">Light</span>
+            <div class="toggle-switch" id="toggleSwitch">
+                <div class="toggle-thumb"></div>
+            </div>
+        </div>
+    </div>
+
     <div class="loading-container">
-        <div class="logo">📱 Qmon</div>
+        <div class="logo">📱 QR Code Studio</div>
         <div class="loading-text">Initializing your QR Code experience...</div>
         <div class="spinner"></div>
         <div class="redirect-info">Redirecting to QR Code Generator...</div>
     </div>
 
     <script>
+        // Dark Mode Functionality
+        class DarkModeManager {
+            constructor() {
+                this.init();
+            }
+
+            init() {
+                // Check for saved theme preference or default to 'light' mode
+                const savedTheme = localStorage.getItem('theme');
+                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                
+                // Determine initial theme
+                let initialTheme = 'light';
+                if (savedTheme) {
+                    initialTheme = savedTheme;
+                } else if (systemPrefersDark) {
+                    initialTheme = 'dark';
+                }
+                
+                this.setTheme(initialTheme);
+                this.updateToggleUI(initialTheme);
+                this.bindEvents();
+            }
+
+            setTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+            }
+
+            getCurrentTheme() {
+                return document.documentElement.getAttribute('data-theme') || 'light';
+            }
+
+            toggleTheme() {
+                const currentTheme = this.getCurrentTheme();
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                this.setTheme(newTheme);
+                this.updateToggleUI(newTheme);
+            }
+
+            updateToggleUI(theme) {
+                const themeLabel = document.getElementById('themeLabel');
+                const toggleSwitch = document.getElementById('toggleSwitch');
+                
+                if (themeLabel && toggleSwitch) {
+                    themeLabel.textContent = theme === 'dark' ? 'Dark' : 'Light';
+                    toggleSwitch.classList.toggle('active', theme === 'dark');
+                }
+            }
+
+            bindEvents() {
+                const darkModeToggle = document.getElementById('darkModeToggle');
+                if (darkModeToggle) {
+                    darkModeToggle.addEventListener('click', () => {
+                        this.toggleTheme();
+                    });
+                }
+
+                // Listen for system theme changes
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                    if (!localStorage.getItem('theme')) {
+                        const newTheme = e.matches ? 'dark' : 'light';
+                        this.setTheme(newTheme);
+                        this.updateToggleUI(newTheme);
+                    }
+                });
+            }
+        }
+
+        // Initialize dark mode manager
+        const darkModeManager = new DarkModeManager();
+        
         // Redirect to QR Code Generator page after a brief loading animation
         setTimeout(function() {
             window.location.href = 'pages/qr_code_generator.html';
@@ -80,6 +222,5 @@
             }, 3000);
         });
     </script>
-<script id="dhws-dataInjector" src="/public/dhws-data-injector.js"></script>
 </body>
 </html>

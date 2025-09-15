@@ -8,26 +8,43 @@
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fqrcodest8828back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
 </head>
-<body class="bg-slate-50 min-h-screen">
+<body class="theme-transition">
     <!-- Header Navigation -->
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-40">
+    <header class="app-header sticky top-0 z-40 theme-transition">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <!-- Logo -->
                 <div class="flex items-center space-x-3">
                     <img src="../public/qmon-logo.png" class="w-8 h-8 rounded-lg flex items-center justify-center"/>
-                    <h1 class="text-xl font-semibold text-slate-900">Qmon</h1>
+                    <h1 class="text-xl font-semibold text-primary">Qmon</h1>
                 </div>
 
-                <!-- Tab Navigation -->
-                <nav class="flex space-x-1 bg-slate-100 rounded-lg p-1">
-                    <a href="qr_code_generator.html" class="px-4 py-2 text-sm font-medium rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-all duration-150">
-                        Generator
-                    </a>
-                    <a href="qr_code_scanner.html" class="px-4 py-2 text-sm font-medium rounded-md bg-white text-blue-600 shadow-sm border border-slate-200 transition-all duration-150">
-                        Scanner
-                    </a>
-                </nav>
+                <!-- Navigation and Dark Mode Toggle -->
+                <div class="flex items-center space-x-4">
+                    <!-- Tab Navigation -->
+                    <nav class="flex space-x-1 nav-background rounded-lg p-1">
+                        <a href="qr_code_generator.html" class="nav-tab">
+                            Generator
+                        </a>
+                        <a href="qr_code_scanner.html" class="nav-tab active">
+                            Scanner
+                        </a>
+                    </nav>
+
+                    <!-- Dark Mode Toggle -->
+                    <div class="flex items-center space-x-2 toggle-dark-mode">
+                        <svg class="w-4 h-4 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                        <div class="dark-mode-toggle" id="darkModeToggle">
+                            <div class="dark-mode-toggle-thumb"></div>
+                        </div>
+                        <svg class="w-4 h-4 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                        </svg>
+                    </div>
+                    <h1 class="text-xl font-semibold text-slate-900">Qmon</h1>
+                </div>
             </div>
         </div>
     </header>
@@ -36,8 +53,8 @@
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- Page Header -->
         <div class="mb-8">
-            <h2 class="text-3xl font-bold text-slate-900 mb-2">QR Code Scanner</h2>
-            <p class="text-slate-600">Scan QR codes using your camera or upload an image to decode instantly.</p>
+            <h2 class="text-3xl font-bold text-primary mb-2">QR Code Scanner</h2>
+            <p class="text-secondary">Scan QR codes using your camera or upload an image to decode instantly.</p>
         </div>
 
         <!-- Scanner Interface -->
@@ -47,7 +64,7 @@
                 <!-- Mode Selection -->
                 <div class="card">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-semibold text-slate-900 flex items-center">
+                        <h3 class="text-lg font-semibold text-primary flex items-center">
                             <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -55,11 +72,11 @@
                             Scanning Mode
                         </h3>
                         
-                        <div class="flex space-x-1 bg-slate-100 rounded-lg p-1">
-                            <button id="camera-mode-btn" class="px-3 py-1.5 text-sm font-medium rounded-md bg-white text-blue-600 shadow-sm border border-slate-200 transition-all duration-150">
+                        <div class="flex space-x-1 nav-background rounded-lg p-1">
+                            <button id="camera-mode-btn" class="nav-tab active">
                                 Camera
                             </button>
-                            <button id="upload-mode-btn" class="px-3 py-1.5 text-sm font-medium rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-all duration-150">
+                            <button id="upload-mode-btn" class="nav-tab">
                                 Upload
                             </button>
                         </div>
@@ -129,29 +146,29 @@
 
                     <!-- Upload Mode -->
                     <div id="upload-section" class="hidden space-y-4">
-                        <div id="drop-zone" class="border-2 border-dashed border-slate-300 rounded-lg p-8 text-center min-h-[320px] lg:min-h-[400px] flex flex-col items-center justify-center transition-colors duration-150 hover:border-blue-400 hover:bg-blue-50">
-                            <svg class="w-16 h-16 text-slate-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div id="drop-zone" class="border-2 border-dashed border-primary rounded-lg p-8 text-center min-h-[320px] lg:min-h-[400px] flex flex-col items-center justify-center transition-colors duration-150 hover:border-blue-400 theme-transition" style="background-color: var(--color-surface);">
+                            <svg class="w-16 h-16 text-muted mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
                             </svg>
-                            <p class="text-lg font-medium text-slate-700 mb-2">Drop QR code image here</p>
-                            <p class="text-sm text-slate-500 mb-4">or click to browse files</p>
+                            <p class="text-lg font-medium text-secondary mb-2">Drop QR code image here</p>
+                            <p class="text-sm text-muted mb-4">or click to browse files</p>
                             <button id="browse-btn" class="btn-primary min-touch-target">
                                 Browse Files
                             </button>
-                            <p class="text-xs text-slate-400 mt-2">Supports JPG, PNG files up to 10MB</p>
+                            <p class="text-xs text-muted mt-2">Supports JPG, PNG files up to 10MB</p>
                         </div>
                         
                         <input type="file" id="file-input" accept="image/*" class="hidden" />
                         
                         <!-- Upload Preview -->
-                        <div id="upload-preview" class="hidden bg-white border border-slate-200 rounded-lg p-4">
+                        <div id="upload-preview" class="hidden bg-elevated border-primary rounded-lg p-4 theme-transition">
                             <div class="flex items-center space-x-3">
-                                <img id="preview-image" class="w-16 h-16 object-cover rounded-lg border border-slate-200" alt="Preview" />
+                                <img id="preview-image" class="w-16 h-16 object-cover rounded-lg border-primary" alt="Preview" />
                                 <div class="flex-1">
-                                    <p id="file-name" class="font-medium text-slate-900"></p>
-                                    <p id="file-size" class="text-sm text-slate-500"></p>
+                                    <p id="file-name" class="font-medium text-primary"></p>
+                                    <p id="file-size" class="text-sm text-secondary"></p>
                                 </div>
-                                <button id="remove-file-btn" class="text-slate-400 hover:text-red-500 transition-colors">
+                                <button id="remove-file-btn" class="text-muted hover:text-red-500 transition-colors">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                                     </svg>
@@ -163,18 +180,18 @@
 
                 <!-- Scan Results -->
                 <div id="scan-results" class="card hidden">
-                    <h3 class="text-lg font-semibold text-slate-900 mb-4 flex items-center">
+                    <h3 class="text-lg font-semibold text-primary mb-4 flex items-center">
                         <svg class="w-5 h-5 text-emerald-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                         Scan Result
                     </h3>
                     
-                    <div class="bg-white border border-slate-200 rounded-lg p-4 mb-4">
+                    <div class="bg-elevated border-primary rounded-lg p-4 mb-4 theme-transition">
                         <div class="flex items-start justify-between">
                             <div class="flex-1">
-                                <p class="text-sm text-slate-600 mb-1">Decoded Content:</p>
-                                <div id="result-content" class="font-mono text-sm text-slate-900 break-all p-2 bg-slate-50 rounded border"></div>
+                                <p class="text-sm text-secondary mb-1">Decoded Content:</p>
+                                <div id="result-content" class="font-mono text-sm text-primary break-all p-2 bg-surface rounded border border-primary"></div>
                             </div>
                         </div>
                     </div>
@@ -208,7 +225,7 @@
             <div class="space-y-6">
                 <!-- Recent Scans -->
                 <div class="card">
-                    <h3 class="text-lg font-semibold text-slate-900 mb-4 flex items-center">
+                    <h3 class="text-lg font-semibold text-primary mb-4 flex items-center">
                         <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
@@ -216,12 +233,12 @@
                     </h3>
                     
                     <div id="recent-scans-list" class="space-y-3">
-                        <div class="text-center py-8 text-slate-400">
+                        <div class="text-center py-8 text-muted">
                             <svg class="w-12 h-12 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                             </svg>
                             <p class="text-sm">No recent scans</p>
-                            <p class="text-xs text-slate-300 mt-1">Your scan history will appear here</p>
+                            <p class="text-xs mt-1">Your scan history will appear here</p>
                         </div>
                     </div>
                     
@@ -231,14 +248,14 @@
                 </div>
 
                 <!-- Scanning Tips -->
-                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <h4 class="text-sm font-semibold text-blue-900 mb-2 flex items-center">
-                        <svg class="w-4 h-4 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="rounded-lg p-4 theme-transition" style="background-color: var(--color-primary-50); border: 1px solid var(--color-primary-200);">
+                    <h4 class="text-sm font-semibold mb-2 flex items-center" style="color: var(--color-primary-900);">
+                        <svg class="w-4 h-4 mr-2" style="color: var(--color-primary-600);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                         Scanning Tips
                     </h4>
-                    <ul class="text-sm text-blue-800 space-y-1">
+                    <ul class="text-sm space-y-1" style="color: var(--color-primary-800);">
                         <li>• Hold your device steady for better scanning</li>
                         <li>• Ensure good lighting conditions</li>
                         <li>• Keep QR code within the scanning frame</li>
@@ -254,16 +271,85 @@
     <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 mt-16">
+    <footer class="app-header mt-16 theme-transition">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div class="text-center">
-                <p class="text-slate-600 text-sm">© 2025 Qmon. All Rights Reserved.</p>
-                <p class="text-slate-500 text-xs mt-1">Generate and scan QR codes with ease</p>
+                <p class="text-secondary text-sm">© 2025 Qmon. All Rights Reserved.</p>
+                <p class="text-muted text-xs mt-1">Generate and scan QR codes with ease</p>
             </div>
         </div>
     </footer>
 
     <script>
+// Dark Mode Manager - Global Functionality
+class DarkModeManager {
+    constructor() {
+        this.init();
+    }
+
+    init() {
+        // Check for saved theme preference or default to system preference
+        const savedTheme = localStorage.getItem('theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        // Determine initial theme
+        let initialTheme = 'light';
+        if (savedTheme) {
+            initialTheme = savedTheme;
+        } else if (systemPrefersDark) {
+            initialTheme = 'dark';
+        }
+        
+        this.setTheme(initialTheme);
+        this.updateToggleUI(initialTheme);
+        this.bindEvents();
+    }
+
+    setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+    }
+
+    getCurrentTheme() {
+        return document.documentElement.getAttribute('data-theme') || 'light';
+    }
+
+    toggleTheme() {
+        const currentTheme = this.getCurrentTheme();
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        this.setTheme(newTheme);
+        this.updateToggleUI(newTheme);
+    }
+
+    updateToggleUI(theme) {
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        if (darkModeToggle) {
+            darkModeToggle.classList.toggle('active', theme === 'dark');
+        }
+    }
+
+    bindEvents() {
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        if (darkModeToggle) {
+            darkModeToggle.addEventListener('click', () => {
+                this.toggleTheme();
+            });
+        }
+
+        // Listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            if (!localStorage.getItem('theme')) {
+                const newTheme = e.matches ? 'dark' : 'light';
+                this.setTheme(newTheme);
+                this.updateToggleUI(newTheme);
+            }
+        });
+    }
+}
+
+// Initialize dark mode manager
+const darkModeManager = new DarkModeManager();
+
         // DOM Elements
         const cameraModeBtn = document.getElementById('camera-mode-btn');
         const uploadModeBtn = document.getElementById('upload-mode-btn');
@@ -324,13 +410,13 @@
 
         function switchToMode(mode) {
             if (mode === 'camera') {
-                cameraModeBtn.className = 'px-3 py-1.5 text-sm font-medium rounded-md bg-white text-blue-600 shadow-sm border border-slate-200 transition-all duration-150';
-                uploadModeBtn.className = 'px-3 py-1.5 text-sm font-medium rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-all duration-150';
+                cameraModeBtn.className = 'nav-tab active';
+                uploadModeBtn.className = 'nav-tab';
                 cameraSection.classList.remove('hidden');
                 uploadSection.classList.add('hidden');
             } else {
-                uploadModeBtn.className = 'px-3 py-1.5 text-sm font-medium rounded-md bg-white text-blue-600 shadow-sm border border-slate-200 transition-all duration-150';
-                cameraModeBtn.className = 'px-3 py-1.5 text-sm font-medium rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-all duration-150';
+                uploadModeBtn.className = 'nav-tab active';
+                cameraModeBtn.className = 'nav-tab';
                 uploadSection.classList.remove('hidden');
                 cameraSection.classList.add('hidden');
             }
@@ -422,17 +508,20 @@
         // Drag and drop
         dropZone.addEventListener('dragover', function(e) {
             e.preventDefault();
-            this.classList.add('border-blue-400', 'bg-blue-50');
+            this.classList.add('border-blue-400');
+            this.style.backgroundColor = 'var(--color-primary-50)';
         });
 
         dropZone.addEventListener('dragleave', function(e) {
             e.preventDefault();
-            this.classList.remove('border-blue-400', 'bg-blue-50');
+            this.classList.remove('border-blue-400');
+            this.style.backgroundColor = 'var(--color-surface)';
         });
 
         dropZone.addEventListener('drop', function(e) {
             e.preventDefault();
-            this.classList.remove('border-blue-400', 'bg-blue-50');
+            this.classList.remove('border-blue-400');
+            this.style.backgroundColor = 'var(--color-surface)';
             
             const files = e.dataTransfer.files;
             if (files.length > 0) {
@@ -540,12 +629,12 @@
         function updateRecentScans() {
             if (recentScans.length === 0) {
                 recentScansList.innerHTML = `
-                    <div class="text-center py-8 text-slate-400">
+                    <div class="text-center py-8 text-muted">
                         <svg class="w-12 h-12 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                         </svg>
                         <p class="text-sm">No recent scans</p>
-                        <p class="text-xs text-slate-300 mt-1">Your scan history will appear here</p>
+                        <p class="text-xs mt-1">Your scan history will appear here</p>
                     </div>
                 `;
                 clearHistoryBtn.classList.add('hidden');
@@ -553,15 +642,15 @@
             }
 
             recentScansList.innerHTML = recentScans.map(scan => `
-                <div class="bg-white border border-slate-200 rounded-lg p-3 hover:bg-slate-50 transition-colors cursor-pointer" onclick="selectRecentScan('${scan.content.replace(/'/g, "\\'")}')">
+                <div class="bg-elevated border-primary rounded-lg p-3 hover:bg-surface transition-colors cursor-pointer theme-transition" onclick="selectRecentScan('${scan.content.replace(/'/g, "\\'")}')">
                     <div class="flex items-start justify-between">
                         <div class="flex-1 min-w-0">
-                            <p class="text-sm font-medium text-slate-900 truncate">
+                            <p class="text-sm font-medium text-primary truncate">
                                 ${scan.isUrl ? '🔗 ' : '📄 '}${scan.content.length > 30 ? scan.content.substring(0, 30) + '...' : scan.content}
                             </p>
-                            <p class="text-xs text-slate-500 mt-1">${scan.timestamp}</p>
+                            <p class="text-xs text-secondary mt-1">${scan.timestamp}</p>
                         </div>
-                        <button onclick="event.stopPropagation(); copyToClipboard('${scan.content.replace(/'/g, "\\'")}'); showToast('Copied to clipboard!', 'success');" class="text-slate-400 hover:text-blue-600 transition-colors ml-2">
+                        <button onclick="event.stopPropagation(); copyToClipboard('${scan.content.replace(/'/g, "\\'")}'); showToast('Copied to clipboard!', 'success');" class="text-muted hover:text-blue-600 transition-colors ml-2">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                             </svg>
@@ -624,10 +713,13 @@
             const toast = document.createElement('div');
             toast.className = `toast-notification ${type === 'success' ? 'border-emerald-200 bg-emerald-50' : 
                                                    type === 'error' ? 'border-red-200 bg-red-50' : 
-                                                   'border-blue-200 bg-blue-50'} slide-in-right`;
+                                                   'border-blue-200 bg-blue-50'} slide-in-right p-4 rounded-lg border shadow-sm max-w-sm theme-transition`;
             
             const iconColor = type === 'success' ? 'text-emerald-600' : 
                              type === 'error' ? 'text-red-600' : 'text-blue-600';
+            
+            const textColor = type === 'success' ? 'text-emerald-800' : 
+                             type === 'error' ? 'text-red-800' : 'text-blue-800';
             
             const icon = type === 'success' ? 
                 '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>' :
@@ -640,8 +732,7 @@
                     <svg class="w-5 h-5 ${iconColor}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         ${icon}
                     </svg>
-                    <span class="text-sm font-medium ${type === 'success' ? 'text-emerald-800' : 
-                                                      type === 'error' ? 'text-red-800' : 'text-blue-800'}">${message}</span>
+                    <span class="text-sm font-medium ${textColor}">${message}</span>
                 </div>
             `;
 
@@ -664,6 +755,5 @@
             stopCamera();
         });
     </script>
-<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
 </body>
 </html>
