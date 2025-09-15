@@ -32,13 +32,18 @@
   --color-accent-500: #10B981; /* emerald-500 */
   --color-accent-600: #059669; /* emerald-600 */
   
-  /* Background Colors */
+  /* Dynamic Colors - Light Mode */
   --color-background: #FFFFFF; /* white */
   --color-surface: #F8FAFC; /* slate-50 */
-  
-  /* Text Colors */
+  --color-surface-elevated: #FFFFFF;
   --color-text-primary: #0F172A; /* slate-900 */
   --color-text-secondary: #475569; /* slate-600 */
+  --color-text-muted: #64748B;
+  --color-border-primary: #E2E8F0;
+  --color-border-secondary: #F1F5F9;
+  --color-card-background: #F8FAFC;
+  --color-header-background: #FFFFFF;
+  --color-toast-background: #FFFFFF;
   
   /* Status Colors */
   --color-success: #059669; /* emerald-600 */
@@ -49,17 +54,37 @@
   --color-error-light: #EF4444; /* red-500 */
 }
 
+/* Dark Mode Variables */
+[data-theme="dark"] {
+  /* Dynamic Colors - Dark Mode */
+  --color-background: #0F172A;
+  --color-surface: #1E293B;
+  --color-surface-elevated: #334155;
+  --color-text-primary: #F1F5F9;
+  --color-text-secondary: #CBD5E1;
+  --color-text-muted: #94A3B8;
+  --color-border-primary: #334155;
+  --color-border-secondary: #475569;
+  --color-card-background: #1E293B;
+  --color-header-background: #1E293B;
+  --color-toast-background: #334155;
+}
+
 @layer base {
   html {
     font-family: 'Inter', sans-serif;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
   }
   
   body {
-    @apply bg-white text-slate-900 antialiased;
+    @apply bg-white text-slate-900 antialiased transition-colors duration-200;
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
   }
   
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Inter', sans-serif;
+    color: var(--color-text-primary);
   }
   
   .font-mono {
@@ -70,22 +95,46 @@
 @layer components {
   .btn-primary {
     @apply bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-md transition-all duration-150 ease-out hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+    background-color: var(--color-primary-600);
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background-color: var(--color-primary-700);
   }
   
   .btn-secondary {
     @apply bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-4 py-2 rounded-md transition-all duration-150 ease-out hover:scale-105 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2;
+    background-color: var(--color-surface-elevated);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border-primary);
+  }
+  
+  .btn-secondary:hover {
+    background-color: var(--color-border-secondary);
   }
   
   .card {
-    @apply bg-slate-50 border border-slate-200 rounded-md p-6;
+    @apply bg-slate-50 border border-slate-200 rounded-md p-6 transition-colors duration-200;
+    background-color: var(--color-card-background);
+    border: 1px solid var(--color-border-primary);
   }
   
   .input-field {
     @apply w-full px-3 py-2 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-150 ease-out;
+    background-color: var(--color-surface-elevated);
+    border: 1px solid var(--color-border-primary);
+    color: var(--color-text-primary);
+  }
+  
+  .input-field::placeholder {
+    color: var(--color-text-muted);
   }
   
   .toast-notification {
     @apply fixed top-4 right-4 bg-white border border-slate-200 rounded-md shadow-lg p-4 backdrop-blur-sm z-50 transform transition-all duration-200 ease-out;
+    background-color: var(--color-toast-background);
+    border: 1px solid var(--color-border-primary);
   }
   
   .loading-pulse {
@@ -98,6 +147,85 @@
   
   .slide-in-right {
     animation: slideInRight 200ms ease-out forwards;
+  }
+  
+  /* Dark Mode Toggle Button */
+  .dark-mode-toggle {
+    @apply relative w-12 h-6 rounded-full cursor-pointer transition-all duration-200;
+    background-color: var(--color-border-primary);
+  }
+  
+  .dark-mode-toggle.active {
+    background-color: var(--color-primary-600);
+  }
+  
+  .dark-mode-toggle-thumb {
+    @apply absolute top-0.5 left-0.5 w-5 h-5 rounded-full transition-transform duration-200;
+    background-color: var(--color-surface-elevated);
+    transform: translateX(0);
+  }
+  
+  .dark-mode-toggle.active .dark-mode-toggle-thumb {
+    transform: translateX(1.5rem);
+  }
+  
+  /* Header styles */
+  .app-header {
+    background-color: var(--color-header-background);
+    border-bottom: 1px solid var(--color-border-primary);
+  }
+  
+  /* Navigation styles */
+  .nav-tab {
+    @apply px-4 py-2 text-sm font-medium rounded-md transition-all duration-150;
+    color: var(--color-text-secondary);
+  }
+  
+  .nav-tab:hover {
+    color: var(--color-text-primary);
+    background-color: var(--color-border-secondary);
+  }
+  
+  .nav-tab.active {
+    background-color: var(--color-surface-elevated);
+    color: var(--color-primary-600);
+    border: 1px solid var(--color-border-primary);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+  
+  .nav-background {
+    background-color: var(--color-border-secondary);
+  }
+  
+  /* Text color utilities */
+  .text-primary {
+    color: var(--color-text-primary);
+  }
+  
+  .text-secondary {
+    color: var(--color-text-secondary);
+  }
+  
+  .text-muted {
+    color: var(--color-text-muted);
+  }
+  
+  /* Background utilities */
+  .bg-surface {
+    background-color: var(--color-surface);
+  }
+  
+  .bg-elevated {
+    background-color: var(--color-surface-elevated);
+  }
+  
+  /* Border utilities */
+  .border-primary {
+    border-color: var(--color-border-primary);
+  }
+  
+  .border-secondary {
+    border-color: var(--color-border-secondary);
   }
 }
 
@@ -112,6 +240,11 @@
   
   .gesture-spacing {
     @apply space-y-2;
+  }
+  
+  /* Theme transition utilities */
+  .theme-transition {
+    @apply transition-colors duration-200;
   }
 }
 
@@ -146,5 +279,22 @@
   
   .hover\:scale-105:hover {
     transform: none !important;
+  }
+}
+
+/* Respect user's system preference */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --color-background: #0F172A;
+    --color-surface: #1E293B;
+    --color-surface-elevated: #334155;
+    --color-text-primary: #F1F5F9;
+    --color-text-secondary: #CBD5E1;
+    --color-text-muted: #94A3B8;
+    --color-border-primary: #334155;
+    --color-border-secondary: #475569;
+    --color-card-background: #1E293B;
+    --color-header-background: #1E293B;
+    --color-toast-background: #334155;
   }
 }

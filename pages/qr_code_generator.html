@@ -1,319 +1,590 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>QR Code Generator - Qmon</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Using a reliable QR code library -->
+    <link rel="stylesheet" href="../css/main.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
-</head>
-<body class="bg-slate-50 min-h-screen">
+    <script
+      type="module"
+      src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fqrcodest8828back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"
+    ></script>
+  </head>
+  <body class="theme-transition">
     <!-- Header Navigation -->
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <!-- Logo -->
-                <div class="flex items-center space-x-3">
-                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm10 0h2v2h-2v-2zm0 4h2v2h-2v-2zm4-4h2v2h-2v-2zm0 4h2v2h-2v-2zm-2-6h2v2h-2v-2zm4 0h2v2h-2v-2z"/>
-                        </svg>
-                    </div>
-                    <h1 class="text-xl font-semibold text-slate-900">Qmon</h1>
-                </div>
+    <header class="app-header sticky top-0 z-40 theme-transition">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <!-- Logo -->
+          <div class="flex items-center space-x-3">
+            <img src="../public/qmon-logo.png" class="w-8 h-8 rounded-lg flex items-center justify-center"/>
+            <h1 class="text-xl font-semibold text-primary">Qmon</h1>
+          </div>
 
-                <!-- Tab Navigation -->
-                <nav class="flex space-x-1 bg-slate-100 rounded-lg p-1">
-                    <a href="#" class="px-4 py-2 text-sm font-medium rounded-md bg-white text-blue-600 shadow-sm border border-slate-200 transition-all duration-150">
-                        Generator
-                    </a>
-                    <a href="qr_code_scanner.html" class="px-4 py-2 text-sm font-medium rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-all duration-150">
-                        Scanner
-                    </a>
-                </nav>
+          <!-- Navigation and Dark Mode Toggle -->
+          <div class="flex items-center space-x-4">
+            <!-- Tab Navigation -->
+            <nav class="flex space-x-1 nav-background rounded-lg p-1">
+              <a href="qr_code_generator.html" class="nav-tab active">
+                Generator
+              </a>
+              <a href="qr_code_scanner.html" class="nav-tab"> Scanner </a>
+            </nav>
+
+            <!-- Dark Mode Toggle -->
+            <div class="flex items-center space-x-2 toggle-dark-mode">
+              <svg
+                class="w-4 h-4 text-muted"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                />
+              </svg>
+              <div class="dark-mode-toggle" id="darkModeToggle">
+                <div class="dark-mode-toggle-thumb"></div>
+              </div>
+              <svg
+                class="w-4 h-4 text-muted"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                />
+              </svg>
             </div>
+          </div>
         </div>
+      </div>
     </header>
 
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Page Header -->
-        <div class="mb-8">
-            <h2 class="text-3xl font-bold text-slate-900 mb-2">QR Code Generator</h2>
-            <p class="text-slate-600">Create customized QR codes from text or URLs with instant preview and export options.</p>
+      <!-- Page Header -->
+      <div class="mb-8">
+        <h2 class="text-3xl font-bold text-primary mb-2">QR Code Generator</h2>
+        <p class="text-secondary">
+          Create customized QR codes from text or URLs with instant preview and
+          export options.
+        </p>
+      </div>
+
+      <!-- Generator Interface -->
+      <div class="grid lg:grid-cols-2 gap-8">
+        <!-- Left Column - Controls -->
+        <div class="space-y-6">
+          <!-- Input Section -->
+          <div class="card">
+            <h3
+              class="text-lg font-semibold text-primary mb-4 flex items-center"
+            >
+              <svg
+                class="w-5 h-5 text-blue-600 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                />
+              </svg>
+              Content Input
+            </h3>
+
+            <div class="space-y-4">
+              <div>
+                <label
+                  for="qr-content"
+                  class="block text-sm font-medium text-secondary mb-2"
+                >
+                  Text or URL to encode
+                </label>
+                <textarea
+                  id="qr-content"
+                  rows="4"
+                  class="input-field resize-none"
+                  placeholder="Enter text, URL, or any content you want to encode..."
+                  maxlength="500"
+                ></textarea>
+                <div class="flex justify-between items-center mt-2">
+                  <p class="text-xs text-muted">
+                    Maximum 500 characters for optimal QR code generation
+                  </p>
+                  <span id="char-count" class="text-xs text-muted">0/500</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Settings Section -->
+          <div class="card">
+            <h3
+              class="text-lg font-semibold text-primary mb-4 flex items-center"
+            >
+              <svg
+                class="w-5 h-5 text-blue-600 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+              QR Code Settings
+            </h3>
+
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label
+                  for="qr-size"
+                  class="block text-sm font-medium text-secondary mb-2"
+                >
+                  Size
+                </label>
+                <select id="qr-size" class="input-field">
+                  <option value="200">200 × 200 px</option>
+                  <option value="300" selected>300 × 300 px</option>
+                  <option value="400">400 × 400 px</option>
+                  <option value="500">500 × 500 px</option>
+                </select>
+              </div>
+
+              <div>
+                <label
+                  for="qr-color"
+                  class="block text-sm font-medium text-secondary mb-2"
+                >
+                  QR Color
+                </label>
+                <select id="qr-color" class="input-field">
+                  <option value="black" selected>Black</option>
+                  <option value="blue">Blue</option>
+                  <option value="green">Green</option>
+                  <option value="red">Red</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="card">
+            <div class="grid sm:grid-cols-2 gap-3">
+              <button
+                id="generate-btn"
+                class="btn-primary min-touch-target flex items-center justify-center space-x-2"
+              >
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  />
+                </svg>
+                <span>Generate QR Code</span>
+              </button>
+
+              <button
+                id="clear-btn"
+                class="btn-secondary min-touch-target flex items-center justify-center space-x-2"
+              >
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
+                </svg>
+                <span>Clear</span>
+              </button>
+
+              <button
+                id="copy-btn"
+                class="btn-secondary min-touch-target flex items-center justify-center space-x-2"
+                disabled
+              >
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                  />
+                </svg>
+                <span>Copy PNG</span>
+              </button>
+
+              <button
+                id="download-btn"
+                class="btn-secondary min-touch-target flex items-center justify-center space-x-2"
+                disabled
+              >
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
+                </svg>
+                <span>Download PNG</span>
+              </button>
+            </div>
+          </div>
         </div>
 
-        <!-- Generator Interface -->
-        <div class="grid lg:grid-cols-2 gap-8">
-            <!-- Left Column - Controls -->
-            <div class="space-y-6">
-                <!-- Input Section -->
-                <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
-                    <h3 class="text-lg font-semibold text-slate-900 mb-4 flex items-center">
-                        <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                        </svg>
-                        Content Input
-                    </h3>
-                    
-                    <div class="space-y-4">
-                        <div>
-                            <label for="qr-content" class="block text-sm font-medium text-slate-700 mb-2">
-                                Text or URL to encode
-                            </label>
-                            <textarea id="qr-content" rows="4" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none" placeholder="Enter text, URL, or any content you want to encode..." maxlength="500"></textarea>
-                            <div class="flex justify-between items-center mt-2">
-                                <p class="text-xs text-slate-500">Maximum 500 characters for optimal QR code generation</p>
-                                <span id="char-count" class="text-xs text-slate-400">0/500</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- Right Column - Preview -->
+        <div class="space-y-6">
+          <!-- QR Code Preview -->
+          <div class="card">
+            <h3
+              class="text-lg font-semibold text-primary mb-4 flex items-center"
+            >
+              <svg
+                class="w-5 h-5 text-blue-600 mr-2"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm10 0h2v2h-2v-2zm0 4h2v2h-2v-2zm4-4h2v2h-2v-2zm0 4h2v2h-2v-2zm-2-6h2v2h-2v-2zm4 0h2v2h-2v-2z"
+                />
+              </svg>
+              QR Code Preview
+            </h3>
 
-                <!-- Settings Section -->
-                <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
-                    <h3 class="text-lg font-semibold text-slate-900 mb-4 flex items-center">
-                        <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        </svg>
-                        QR Code Settings
-                    </h3>
-                    
-                    <div class="grid sm:grid-cols-2 gap-4">
-                        <div>
-                            <label for="qr-size" class="block text-sm font-medium text-slate-700 mb-2">
-                                Size
-                            </label>
-                            <select id="qr-size" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                <option value="200">200 × 200 px</option>
-                                <option value="300" selected>300 × 300 px</option>
-                                <option value="400">400 × 400 px</option>
-                                <option value="500">500 × 500 px</option>
-                            </select>
-                        </div>
-                        
-                        <div>
-                            <label for="qr-color" class="block text-sm font-medium text-slate-700 mb-2">
-                                QR Color
-                            </label>
-                            <select id="qr-color" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                <option value="black" selected>Black</option>
-                                <option value="blue">Blue</option>
-                                <option value="green">Green</option>
-                                <option value="red">Red</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+            <div
+              id="qr-preview-container"
+              class="bg-elevated border-2 border-dashed border-primary rounded-lg p-8 text-center min-h-[320px] flex flex-col items-center justify-center theme-transition"
+            >
+              <div id="qr-placeholder" class="text-muted">
+                <svg
+                  class="w-16 h-16 mx-auto mb-4 opacity-50"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm10 0h2v2h-2v-2zm0 4h2v2h-2v-2zm4-4h2v2h-2v-2zm0 4h2v2h-2v-2zm-2-6h2v2h-2v-2zm4 0h2v2h-2v-2z"
+                  />
+                </svg>
+                <p class="text-lg font-medium mb-2">No QR Code Generated</p>
+                <p class="text-sm">
+                  Enter content and click "Generate QR Code" to create your QR
+                  code
+                </p>
+              </div>
 
-                <!-- Action Buttons -->
-                <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
-                    <div class="grid sm:grid-cols-2 gap-3">
-                        <button id="generate-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 flex items-center justify-center space-x-2" disabled>
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                            </svg>
-                            <span>Generate QR Code</span>
-                        </button>
-                        
-                        <button id="clear-btn" class="bg-slate-600 hover:bg-slate-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 flex items-center justify-center space-x-2">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                            </svg>
-                            <span>Clear</span>
-                        </button>
-                        
-                        <button id="copy-btn" class="bg-slate-600 hover:bg-slate-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 flex items-center justify-center space-x-2" disabled>
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                            </svg>
-                            <span>Copy PNG</span>
-                        </button>
-                        
-                        <button id="download-btn" class="bg-slate-600 hover:bg-slate-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 flex items-center justify-center space-x-2" disabled>
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                            </svg>
-                            <span>Download PNG</span>
-                        </button>
-                    </div>
-                </div>
+              <canvas
+                id="qr-canvas"
+                class="hidden max-w-full h-auto border border-primary rounded-lg shadow-sm"
+              ></canvas>
             </div>
 
-            <!-- Right Column - Preview -->
-            <div class="space-y-6">
-                <!-- QR Code Preview -->
-                <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
-                    <h3 class="text-lg font-semibold text-slate-900 mb-4 flex items-center">
-                        <svg class="w-5 h-5 text-blue-600 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm10 0h2v2h-2v-2zm0 4h2v2h-2v-2zm4-4h2v2h-2v-2zm0 4h2v2h-2v-2zm-2-6h2v2h-2v-2zm4 0h2v2h-2v-2z"/>
-                        </svg>
-                        QR Code Preview
-                    </h3>
-                    
-                    <div id="qr-preview-container" class="bg-white border-2 border-dashed border-slate-200 rounded-lg p-8 text-center min-h-[320px] flex flex-col items-center justify-center">
-                        <div id="qr-placeholder" class="text-slate-400">
-                            <svg class="w-16 h-16 mx-auto mb-4 opacity-50" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm10 0h2v2h-2v-2zm0 4h2v2h-2v-2zm4-4h2v2h-2v-2zm0 4h2v2h-2v-2zm-2-6h2v2h-2v-2zm4 0h2v2h-2v-2z"/>
-                            </svg>
-                            <p class="text-lg font-medium mb-2">No QR Code Generated</p>
-                            <p class="text-sm">Enter content and click "Generate QR Code" to create your QR code</p>
-                        </div>
-                        
-                        <div id="qr-result" class="hidden">
-                            <!-- QR code will be displayed here -->
-                        </div>
-                    </div>
-                    
-                    <div id="qr-info" class="hidden mt-4 p-3 bg-slate-100 rounded-lg">
-                        <div class="flex items-center justify-between text-sm">
-                            <span class="text-slate-600">Size:</span>
-                            <span id="qr-size-info" class="font-medium text-slate-900">300 × 300 px</span>
-                        </div>
-                        <div class="flex items-start justify-between text-sm mt-2">
-                            <span class="text-slate-600 flex-shrink-0">Content:</span>
-                            <span id="qr-content-info" class="font-medium text-slate-900 text-right ml-2 break-all"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Quick Tips -->
-                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <h4 class="text-sm font-semibold text-blue-900 mb-2 flex items-center">
-                        <svg class="w-4 h-4 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                        Quick Tips
-                    </h4>
-                    <ul class="text-sm text-blue-800 space-y-1">
-                        <li>• URLs should include http:// or https://</li>
-                        <li>• Keep content under 500 characters for best results</li>
-                        <li>• Larger sizes work better for printing</li>
-                        <li>• Test your QR codes before using them</li>
-                    </ul>
-                </div>
+            <div
+              id="qr-info"
+              class="hidden mt-4 p-3 bg-surface rounded-lg theme-transition"
+            >
+              <div class="flex items-center justify-between text-sm">
+                <span class="text-secondary">Size:</span>
+                <span id="qr-size-info" class="font-medium text-primary"
+                  >300 × 300 px</span
+                >
+              </div>
+              <div class="flex items-start justify-between text-sm mt-2">
+                <span class="text-secondary flex-shrink-0">Content:</span>
+                <span
+                  id="qr-content-info"
+                  class="font-medium text-primary text-right ml-2 break-all"
+                ></span>
+              </div>
             </div>
+          </div>
+
+          <!-- Quick Tips -->
+          <div
+            class="bg-blue-50 border border-blue-200 rounded-lg p-4 theme-transition"
+            style="
+              background-color: var(--color-primary-50);
+              border-color: var(--color-primary-200);
+            "
+          >
+            <h4
+              class="text-sm font-semibold mb-2 flex items-center"
+              style="color: var(--color-primary-900)"
+            >
+              <svg
+                class="w-4 h-4 mr-2"
+                style="color: var(--color-primary-600)"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              Quick Tips
+            </h4>
+            <ul
+              class="text-sm space-y-1"
+              style="color: var(--color-primary-800)"
+            >
+              <li>• URLs should include http:// or https://</li>
+              <li>• Keep content under 500 characters for best results</li>
+              <li>• Larger sizes work better for printing</li>
+              <li>• Test your QR codes before using them</li>
+            </ul>
+          </div>
         </div>
+      </div>
     </main>
 
     <!-- Toast Notifications -->
     <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 mt-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div class="text-center">
-                <p class="text-slate-600 text-sm">© 2025 Qmon. All Rights Reserved.</p>
-                <p class="text-slate-500 text-xs mt-1">Generate and scan QR codes with ease</p>
-            </div>
+    <footer class="app-header mt-16 theme-transition">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="text-center">
+          <p class="text-secondary text-sm">
+            © 2025 Qmon. All Rights Reserved.
+          </p>
+          <p class="text-muted text-xs mt-1">
+            Generate and scan QR codes with ease
+          </p>
         </div>
+      </div>
     </footer>
 
     <script>
-        // QR Code Generator using reliable qrcode-js library
-        class QRCodeGenerator {
-            constructor() {
-                this.currentQRData = null;
-                this.init();
-            }
+      class DarkModeManager {
+        constructor() {
+          this.init();
+        }
 
-            init() {
-                console.log('Initializing QR Code Generator...');
-                this.bindEvents();
-                this.updateCharacterCount();
-            }
+        init() {
+          // Check for saved theme preference or default to system preference
+          const savedTheme = localStorage.getItem("theme");
+          const systemPrefersDark = window.matchMedia(
+            "(prefers-color-scheme: dark)"
+          ).matches;
 
-            bindEvents() {
-                const contentInput = document.getElementById('qr-content');
-                const generateBtn = document.getElementById('generate-btn');
-                const clearBtn = document.getElementById('clear-btn');
-                const copyBtn = document.getElementById('copy-btn');
-                const downloadBtn = document.getElementById('download-btn');
+          // Determine initial theme
+          let initialTheme = "light";
+          if (savedTheme) {
+            initialTheme = savedTheme;
+          } else if (systemPrefersDark) {
+            initialTheme = "dark";
+          }
 
-                // Character counter and input validation
-                contentInput.addEventListener('input', () => {
-                    this.updateCharacterCount();
-                    this.toggleGenerateButton();
-                });
+          this.setTheme(initialTheme);
+          this.updateToggleUI(initialTheme);
+          this.bindEvents();
+        }
 
-                // Generate QR Code
-                generateBtn.addEventListener('click', () => {
-                    this.generateQRCode();
-                });
+        setTheme(theme) {
+          document.documentElement.setAttribute("data-theme", theme);
+          localStorage.setItem("theme", theme);
+        }
 
-                // Clear form
-                clearBtn.addEventListener('click', () => {
-                    this.clearForm();
-                });
+        getCurrentTheme() {
+          return document.documentElement.getAttribute("data-theme") || "light";
+        }
 
-                // Copy QR Code
-                copyBtn.addEventListener('click', () => {
-                    this.copyQRCode();
-                });
+        toggleTheme() {
+          const currentTheme = this.getCurrentTheme();
+          const newTheme = currentTheme === "dark" ? "light" : "dark";
+          this.setTheme(newTheme);
+          this.updateToggleUI(newTheme);
+        }
 
-                // Download QR Code
-                downloadBtn.addEventListener('click', () => {
-                    this.downloadQRCode();
-                });
-            }
+        updateToggleUI(theme) {
+          const darkModeToggle = document.getElementById("darkModeToggle");
+          if (darkModeToggle) {
+            darkModeToggle.classList.toggle("active", theme === "dark");
+          }
+        }
 
-            updateCharacterCount() {
-                const contentInput = document.getElementById('qr-content');
-                const charCount = document.getElementById('char-count');
-                const length = contentInput.value.length;
-                
-                charCount.textContent = `${length}/500`;
-                
-                // Color coding
-                charCount.classList.remove('text-amber-600', 'text-blue-600', 'text-slate-400');
-                if (length > 400) {
-                    charCount.classList.add('text-amber-600');
-                } else if (length > 300) {
-                    charCount.classList.add('text-blue-600');
-                } else {
-                    charCount.classList.add('text-slate-400');
-                }
-            }
+        bindEvents() {
+          const darkModeToggle = document.getElementById("darkModeToggle");
+          if (darkModeToggle) {
+            darkModeToggle.addEventListener("click", () => {
+              this.toggleTheme();
+            });
+          }
 
-            toggleGenerateButton() {
-                const contentInput = document.getElementById('qr-content');
-                const generateBtn = document.getElementById('generate-btn');
-                const hasContent = contentInput.value.trim().length > 0;
-                
-                generateBtn.disabled = !hasContent;
-                if (hasContent) {
-                    generateBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                } else {
-                    generateBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                }
-            }
+          // Listen for system theme changes
+          window
+            .matchMedia("(prefers-color-scheme: dark)")
+            .addEventListener("change", (e) => {
+              if (!localStorage.getItem("theme")) {
+                const newTheme = e.matches ? "dark" : "light";
+                this.setTheme(newTheme);
+                this.updateToggleUI(newTheme);
+              }
+            });
+        }
+      }
 
-            generateQRCode() {
-                const contentInput = document.getElementById('qr-content');
-                const sizeSelect = document.getElementById('qr-size');
-                const colorSelect = document.getElementById('qr-color');
-                const generateBtn = document.getElementById('generate-btn');
+      // Initialize dark mode manager
+      const darkModeManager = new DarkModeManager();
 
-                const content = contentInput.value.trim();
-                if (!content) {
-                    this.showToast('Please enter content to generate QR code', 'error');
-                    return;
-                }
+      // QR Code Generator using reliable qrcode-js library
+      class QRCodeGenerator {
+        constructor() {
+          this.currentQRData = null;
+          this.init();
+        }
 
-                if (content.length > 500) {
-                    this.showToast('Content too long. Maximum 500 characters allowed.', 'error');
-                    return;
-                }
+        init() {
+          console.log("Initializing QR Code Generator...");
+          this.bindEvents();
+          this.updateCharacterCount();
+        }
 
-                const size = parseInt(sizeSelect.value);
-                const color = this.getColor(colorSelect.value);
+        bindEvents() {
+          const contentInput = document.getElementById("qr-content");
+          const generateBtn = document.getElementById("generate-btn");
+          const clearBtn = document.getElementById("clear-btn");
+          const copyBtn = document.getElementById("copy-btn");
+          const downloadBtn = document.getElementById("download-btn");
 
-                // Show loading state
-                const originalHTML = generateBtn.innerHTML;
-                generateBtn.disabled = true;
-                generateBtn.innerHTML = `
+          // Character counter and input validation
+          contentInput.addEventListener("input", () => {
+            this.updateCharacterCount();
+            this.toggleGenerateButton();
+          });
+
+          // Generate QR Code
+          generateBtn.addEventListener("click", () => {
+            this.generateQRCode();
+          });
+
+          // Clear form
+          clearBtn.addEventListener("click", () => {
+            this.clearForm();
+          });
+
+          // Copy QR Code
+          copyBtn.addEventListener("click", () => {
+            this.copyQRCode();
+          });
+
+          // Download QR Code
+          downloadBtn.addEventListener("click", () => {
+            this.downloadQRCode();
+          });
+        }
+
+        updateCharacterCount() {
+          const contentInput = document.getElementById("qr-content");
+          const charCount = document.getElementById("char-count");
+          const length = contentInput.value.length;
+
+          charCount.textContent = `${length}/500`;
+
+          // Color coding
+          charCount.classList.remove(
+            "text-amber-600",
+            "text-blue-600",
+            "text-slate-400"
+          );
+          if (length > 400) {
+            charCount.classList.add("text-amber-600");
+          } else if (length > 300) {
+            charCount.classList.add("text-blue-600");
+          } else {
+            charCount.classList.add("text-slate-400");
+          }
+        }
+
+        toggleGenerateButton() {
+          const contentInput = document.getElementById("qr-content");
+          const generateBtn = document.getElementById("generate-btn");
+          const hasContent = contentInput.value.trim().length > 0;
+
+          generateBtn.disabled = !hasContent;
+          if (hasContent) {
+            generateBtn.classList.remove("opacity-50", "cursor-not-allowed");
+          } else {
+            generateBtn.classList.add("opacity-50", "cursor-not-allowed");
+          }
+        }
+
+        generateQRCode() {
+          const contentInput = document.getElementById("qr-content");
+          const sizeSelect = document.getElementById("qr-size");
+          const colorSelect = document.getElementById("qr-color");
+          const generateBtn = document.getElementById("generate-btn");
+
+          const content = contentInput.value.trim();
+          if (!content) {
+            this.showToast("Please enter content to generate QR code", "error");
+            return;
+          }
+
+          if (content.length > 500) {
+            this.showToast(
+              "Content too long. Maximum 500 characters allowed.",
+              "error"
+            );
+            return;
+          }
+
+          const size = parseInt(sizeSelect.value);
+          const color = this.getColor(colorSelect.value);
+
+          // Show loading state
+          const originalHTML = generateBtn.innerHTML;
+          generateBtn.disabled = true;
+          generateBtn.innerHTML = `
                     <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -321,247 +592,270 @@
                     <span>Generating...</span>
                 `;
 
-                try {
-                    // Create QR code using qrcode-generator library
-                    const typeNumber = this.getOptimalTypeNumber(content.length);
-                    const errorCorrectionLevel = 'M'; // Medium error correction
-                    
-                    const qr = qrcode(typeNumber, errorCorrectionLevel);
-                    qr.addData(content);
-                    qr.make();
+          try {
+            // Create QR code using qrcode-generator library
+            const typeNumber = this.getOptimalTypeNumber(content.length);
+            const errorCorrectionLevel = "M"; // Medium error correction
 
-                    // Create canvas and draw QR code
-                    const canvas = document.createElement('canvas');
-                    const moduleCount = qr.getModuleCount();
-                    const cellSize = Math.floor(size / moduleCount);
-                    const margin = Math.floor(cellSize * 2);
-                    
-                    canvas.width = size;
-                    canvas.height = size;
-                    
-                    const ctx = canvas.getContext('2d');
-                    
-                    // Fill background
-                    ctx.fillStyle = '#ffffff';
-                    ctx.fillRect(0, 0, size, size);
-                    
-                    // Draw QR modules
-                    ctx.fillStyle = color;
-                    const offset = Math.floor((size - moduleCount * cellSize) / 2);
-                    
-                    for (let row = 0; row < moduleCount; row++) {
-                        for (let col = 0; col < moduleCount; col++) {
-                            if (qr.isDark(row, col)) {
-                                ctx.fillRect(
-                                    offset + col * cellSize,
-                                    offset + row * cellSize,
-                                    cellSize,
-                                    cellSize
-                                );
-                            }
-                        }
-                    }
+            const qr = qrcode(typeNumber, errorCorrectionLevel);
+            qr.addData(content);
+            qr.make();
 
-                    // Display the QR code
-                    this.displayQRCode(canvas, content, size);
-                    
-                    // Store current QR data
-                    this.currentQRData = {
-                        canvas: canvas,
-                        content: content,
-                        size: size
-                    };
+            // Create canvas and draw QR code
+            const canvas = document.createElement("canvas");
+            const moduleCount = qr.getModuleCount();
+            const cellSize = Math.floor(size / moduleCount);
+            const margin = Math.floor(cellSize * 2);
 
-                    // Enable action buttons
-                    document.getElementById('copy-btn').disabled = false;
-                    document.getElementById('download-btn').disabled = false;
-                    document.getElementById('copy-btn').classList.remove('opacity-50', 'cursor-not-allowed');
-                    document.getElementById('download-btn').classList.remove('opacity-50', 'cursor-not-allowed');
+            canvas.width = size;
+            canvas.height = size;
 
-                    this.showToast('QR code generated successfully!', 'success');
+            const ctx = canvas.getContext("2d");
 
-                } catch (error) {
-                    console.error('QR generation error:', error);
-                    this.showToast('Failed to generate QR code: ' + error.message, 'error');
-                } finally {
-                    // Restore button state
-                    generateBtn.disabled = false;
-                    generateBtn.innerHTML = originalHTML;
+            // Fill background
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, size, size);
+
+            // Draw QR modules
+            ctx.fillStyle = color;
+            const offset = Math.floor((size - moduleCount * cellSize) / 2);
+
+            for (let row = 0; row < moduleCount; row++) {
+              for (let col = 0; col < moduleCount; col++) {
+                if (qr.isDark(row, col)) {
+                  ctx.fillRect(
+                    offset + col * cellSize,
+                    offset + row * cellSize,
+                    cellSize,
+                    cellSize
+                  );
                 }
+              }
             }
 
-            getOptimalTypeNumber(length) {
-                // More generous type capacities for URLs
-                const typeCapacities = [17, 32, 53, 78, 106, 134, 154, 192, 230, 271];
-                for (let i = 0; i < typeCapacities.length; i++) {
-                    if (length <= typeCapacities[i]) {
-                        return i + 1;
-                    }
-                }
-                return 10; // Maximum type
+            // Display the QR code
+            this.displayQRCode(canvas, content, size);
+
+            // Store current QR data
+            this.currentQRData = {
+              canvas: canvas,
+              content: content,
+              size: size,
+            };
+
+            // Enable action buttons
+            document.getElementById("copy-btn").disabled = false;
+            document.getElementById("download-btn").disabled = false;
+            document
+              .getElementById("copy-btn")
+              .classList.remove("opacity-50", "cursor-not-allowed");
+            document
+              .getElementById("download-btn")
+              .classList.remove("opacity-50", "cursor-not-allowed");
+
+            this.showToast("QR code generated successfully!", "success");
+          } catch (error) {
+            console.error("QR generation error:", error);
+            this.showToast(
+              "Failed to generate QR code: " + error.message,
+              "error"
+            );
+          } finally {
+            // Restore button state
+            generateBtn.disabled = false;
+            generateBtn.innerHTML = originalHTML;
+          }
+        }
+
+        getOptimalTypeNumber(length) {
+          const capacities = [
+            14, 26, 42, 62, 84, 106, 122, 152, 180, 213, 251, 287, 331, 362,
+            412, 450, 504, 560, 624, 666, 711, 779, 857, 911, 997, 1059, 1125,
+            1190, 1264, 1370, 1452, 1538, 1628, 1722, 1809, 1911, 1989, 2099,
+            2213, 2331, 2452,
+          ];
+          for (let i = 0; i < capacities.length; i++) {
+            if (length <= capacities[i]) {
+              return i + 1;
             }
+          }
+          return 40;
+        }
 
-            getColor(colorName) {
-                const colors = {
-                    'black': '#1e293b',
-                    'blue': '#2563eb',
-                    'green': '#16a34a',
-                    'red': '#dc2626'
-                };
-                return colors[colorName] || colors['black'];
-            }
+        getColor(colorName) {
+          const colors = {
+            black: "#1e293b",
+            blue: "#2563eb",
+            green: "#16a34a",
+            red: "#dc2626",
+          };
+          return colors[colorName] || colors["black"];
+        }
 
-            displayQRCode(canvas, content, size) {
-                const placeholder = document.getElementById('qr-placeholder');
-                const qrResult = document.getElementById('qr-result');
-                const qrInfo = document.getElementById('qr-info');
-                const qrSizeInfo = document.getElementById('qr-size-info');
-                const qrContentInfo = document.getElementById('qr-content-info');
+        displayQRCode(canvas, content, size) {
+          const placeholder = document.getElementById("qr-placeholder");
+          const qrCanvas = document.getElementById("qr-canvas");
+          const qrInfo = document.getElementById("qr-info");
+          const qrSizeInfo = document.getElementById("qr-size-info");
+          const qrContentInfo = document.getElementById("qr-content-info");
 
-                // Hide placeholder
-                placeholder.classList.add('hidden');
-                
-                // Show QR code
-                qrResult.classList.remove('hidden');
-                qrResult.innerHTML = '';
-                
-                // Add canvas with proper styling
-                canvas.style.maxWidth = '100%';
-                canvas.style.height = 'auto';
-                canvas.style.border = '1px solid #e2e8f0';
-                canvas.style.borderRadius = '0.5rem';
-                canvas.style.boxShadow = '0 1px 3px 0 rgba(0, 0, 0, 0.1)';
-                
-                qrResult.appendChild(canvas);
-                
-                // Show info
-                qrInfo.classList.remove('hidden');
-                qrSizeInfo.textContent = `${size} × ${size} px`;
-                qrContentInfo.textContent = content.length > 50 ? content.substring(0, 50) + '...' : content;
-            }
+          // Hide placeholder
+          placeholder.classList.add("hidden");
 
-            clearForm() {
-                const contentInput = document.getElementById('qr-content');
-                const sizeSelect = document.getElementById('qr-size');
-                const colorSelect = document.getElementById('qr-color');
-                const placeholder = document.getElementById('qr-placeholder');
-                const qrResult = document.getElementById('qr-result');
-                const qrInfo = document.getElementById('qr-info');
-                const copyBtn = document.getElementById('copy-btn');
-                const downloadBtn = document.getElementById('download-btn');
+          // Show QR code canvas
+          qrCanvas.classList.remove("hidden");
 
-                // Clear form
-                contentInput.value = '';
-                sizeSelect.value = '300';
-                colorSelect.value = 'black';
+          // Copy generated canvas to the existing canvas
+          qrCanvas.width = canvas.width;
+          qrCanvas.height = canvas.height;
+          const ctx = qrCanvas.getContext("2d");
+          ctx.clearRect(0, 0, qrCanvas.width, qrCanvas.height);
+          ctx.drawImage(canvas, 0, 0);
 
-                // Update character count
-                this.updateCharacterCount();
-                this.toggleGenerateButton();
+          // Show info
+          qrInfo.classList.remove("hidden");
+          qrSizeInfo.textContent = `${size} × ${size} px`;
+          qrContentInfo.textContent =
+            content.length > 50 ? content.substring(0, 50) + "..." : content;
+        }
 
-                // Reset display
-                qrResult.classList.add('hidden');
-                qrInfo.classList.add('hidden');
-                placeholder.classList.remove('hidden');
+        // ...existing code...
 
-                // Disable action buttons
-                copyBtn.disabled = true;
-                downloadBtn.disabled = true;
-                copyBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                downloadBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        clearForm() {
+          const contentInput = document.getElementById("qr-content");
+          const sizeSelect = document.getElementById("qr-size");
+          const colorSelect = document.getElementById("qr-color");
+          const placeholder = document.getElementById("qr-placeholder");
+          const qrResult = document.getElementById("qr-result");
+          const qrInfo = document.getElementById("qr-info");
+          const copyBtn = document.getElementById("copy-btn");
+          const downloadBtn = document.getElementById("download-btn");
 
-                // Clear current data
-                this.currentQRData = null;
+          // Clear form
+          contentInput.value = "";
+          sizeSelect.value = "300";
+          colorSelect.value = "black";
 
-                this.showToast('Form cleared', 'success');
-            }
+          // Update character count
+          this.updateCharacterCount();
+          this.toggleGenerateButton();
 
-            async copyQRCode() {
-                if (!this.currentQRData) {
-                    this.showToast('No QR code to copy', 'error');
-                    return;
-                }
+          // Reset display
+          qrResult.classList.add("hidden");
+          qrInfo.classList.add("hidden");
+          placeholder.classList.remove("hidden");
 
-                try {
-                    const canvas = this.currentQRData.canvas;
-                    canvas.toBlob(async (blob) => {
-                        try {
-                            if (navigator.clipboard && navigator.clipboard.write) {
-                                await navigator.clipboard.write([
-                                    new ClipboardItem({
-                                        'image/png': blob
-                                    })
-                                ]);
-                                this.showToast('QR code copied to clipboard!', 'success');
-                            } else {
-                                this.showToast('Clipboard not supported. Use download instead.', 'error');
-                            }
-                        } catch (err) {
-                            console.error('Clipboard error:', err);
-                            this.showToast('Failed to copy. Try downloading instead.', 'error');
-                        }
-                    });
-                } catch (err) {
-                    console.error('Copy error:', err);
-                    this.showToast('Failed to copy QR code', 'error');
-                }
-            }
+          // Disable action buttons
+          copyBtn.disabled = true;
+          downloadBtn.disabled = true;
+          copyBtn.classList.add("opacity-50", "cursor-not-allowed");
+          downloadBtn.classList.add("opacity-50", "cursor-not-allowed");
 
-            downloadQRCode() {
-                if (!this.currentQRData) {
-                    this.showToast('No QR code to download', 'error');
-                    return;
-                }
+          // Clear current data
+          this.currentQRData = null;
 
-                try {
-                    const canvas = this.currentQRData.canvas;
-                    const link = document.createElement('a');
-                    const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
-                    link.download = `qr-code-${timestamp}-${this.currentQRData.size}px.png`;
-                    link.href = canvas.toDataURL('image/png');
-                    
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    
-                    this.showToast('QR code downloaded!', 'success');
-                } catch (err) {
-                    console.error('Download error:', err);
-                    this.showToast('Failed to download QR code', 'error');
-                }
-            }
+          this.showToast("Form cleared", "success");
+        }
 
-            showToast(message, type = 'info', duration = 5000) {
-                const toastContainer = document.getElementById('toast-container');
-                
-                if (!toastContainer) {
-                    console.log(message);
-                    return;
-                }
+        async copyQRCode() {
+          if (!this.currentQRData) {
+            this.showToast("No QR code to copy", "error");
+            return;
+          }
 
-                const toast = document.createElement('div');
-                toast.className = `p-4 rounded-lg border shadow-sm max-w-sm transform transition-all duration-300 translate-x-full opacity-0`;
-                
-                // Set colors based on type
-                if (type === 'success') {
-                    toast.className += ' border-emerald-200 bg-emerald-50 text-emerald-800';
-                } else if (type === 'error') {
-                    toast.className += ' border-red-200 bg-red-50 text-red-800';
+          try {
+            const canvas = this.currentQRData.canvas;
+            canvas.toBlob(async (blob) => {
+              try {
+                if (navigator.clipboard && navigator.clipboard.write) {
+                  await navigator.clipboard.write([
+                    new ClipboardItem({
+                      "image/png": blob,
+                    }),
+                  ]);
+                  this.showToast("QR code copied to clipboard!", "success");
                 } else {
-                    toast.className += ' border-blue-200 bg-blue-50 text-blue-800';
+                  this.showToast(
+                    "Clipboard not supported. Use download instead.",
+                    "error"
+                  );
                 }
+              } catch (err) {
+                console.error("Clipboard error:", err);
+                this.showToast(
+                  "Failed to copy. Try downloading instead.",
+                  "error"
+                );
+              }
+            });
+          } catch (err) {
+            console.error("Copy error:", err);
+            this.showToast("Failed to copy QR code", "error");
+          }
+        }
 
-                // Set icon based on type
-                let icon;
-                if (type === 'success') {
-                    icon = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>';
-                } else if (type === 'error') {
-                    icon = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>';
-                } else {
-                    icon = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>';
-                }
+        downloadQRCode() {
+          if (!this.currentQRData) {
+            this.showToast("No QR code to download", "error");
+            return;
+          }
 
-                toast.innerHTML = `
+          try {
+            const canvas = this.currentQRData.canvas;
+            const link = document.createElement("a");
+            const timestamp = new Date()
+              .toISOString()
+              .slice(0, 19)
+              .replace(/:/g, "-");
+            link.download = `qr-code-${timestamp}-${this.currentQRData.size}px.png`;
+            link.href = canvas.toDataURL("image/png");
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            this.showToast("QR code downloaded!", "success");
+          } catch (err) {
+            console.error("Download error:", err);
+            this.showToast("Failed to download QR code", "error");
+          }
+        }
+
+        showToast(message, type = "info", duration = 5000) {
+          const toastContainer = document.getElementById("toast-container");
+
+          if (!toastContainer) {
+            console.log(message);
+            return;
+          }
+
+          const toast = document.createElement("div");
+          toast.className = `p-4 rounded-lg border shadow-sm max-w-sm transform transition-all duration-300 translate-x-full opacity-0`;
+
+          // Set colors based on type
+          if (type === "success") {
+            toast.className +=
+              " border-emerald-200 bg-emerald-50 text-emerald-800";
+          } else if (type === "error") {
+            toast.className += " border-red-200 bg-red-50 text-red-800";
+          } else {
+            toast.className += " border-blue-200 bg-blue-50 text-blue-800";
+          }
+
+          // Set icon based on type
+          let icon;
+          if (type === "success") {
+            icon =
+              '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>';
+          } else if (type === "error") {
+            icon =
+              '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>';
+          } else {
+            icon =
+              '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>';
+          }
+
+          toast.innerHTML = `
                     <div class="flex items-center space-x-3">
                         <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             ${icon}
@@ -575,31 +869,31 @@
                     </div>
                 `;
 
-                toastContainer.appendChild(toast);
+          toastContainer.appendChild(toast);
 
-                // Animate in
-                setTimeout(() => {
-                    toast.classList.remove('translate-x-full', 'opacity-0');
-                }, 10);
+          // Animate in
+          setTimeout(() => {
+            toast.classList.remove("translate-x-full", "opacity-0");
+          }, 10);
 
-                // Auto remove
-                setTimeout(() => {
-                    if (toast.parentNode) {
-                        toast.classList.add('translate-x-full', 'opacity-0');
-                        setTimeout(() => {
-                            if (toast.parentNode) {
-                                toast.parentNode.removeChild(toast);
-                            }
-                        }, 300);
-                    }
-                }, duration);
+          // Auto remove
+          setTimeout(() => {
+            if (toast.parentNode) {
+              toast.classList.add("translate-x-full", "opacity-0");
+              setTimeout(() => {
+                if (toast.parentNode) {
+                  toast.parentNode.removeChild(toast);
+                }
+              }, 300);
             }
+          }, duration);
         }
+      }
 
-        // Initialize the QR Code Generator when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            new QRCodeGenerator();
-        });
+      // Initialize the QR Code Generator when DOM is loaded
+      document.addEventListener("DOMContentLoaded", function () {
+        new QRCodeGenerator();
+      });
     </script>
-</body>
+  </body>
 </html>
